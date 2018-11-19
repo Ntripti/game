@@ -1,0 +1,193 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<script>
+var canvas;
+var canvasContext;
+var ballX;
+var ballY;
+var ballSpeedX=5;
+var ballSpeedY=8;
+var frameSet=30;
+var paddleY=150;
+var paddleHeight=150;
+var code=0;
+window.onload=function()
+{
+
+canvas=document.getElementById("gameCanvas");
+canvasContext=canvas.getContext("2d");
+setInterval(both,1000/frameSet);//1000=1s
+
+canvas.addEventListener("mousemove",function(event)
+{
+paddleY=mouseCount(event).y-paddleHeight/2;
+});
+
+//play
+canvas.addEventListener("click",function(event){
+if(mouseCount(event).x>100 && mouseCount(event).x<160 && mouseCount(event).y>10 && mouseCount(event).y<40)
+{
+reset();
+}
+});
+//pause
+canvas.addEventListener("click",function(event){
+if(mouseCount(event).x>200 && mouseCount(event).x<260 && mouseCount(event).y>10 && mouseCount(event).y<40)
+{
+alert("Game Pause Click Ok");
+}
+});
+//level1
+canvas.addEventListener("click",function(event){
+if(mouseCount(event).x>300 && mouseCount(event).x<370 && mouseCount(event).y>10 && mouseCount(event).y<40)
+{
+ballSpeedX=10;
+ballSpeedY=6;
+}
+});
+//level2
+canvas.addEventListener("click",function(event){
+if(mouseCount(event).x>400 && mouseCount(event).x<470 && mouseCount(event).y>10 && mouseCount(event).y<40)
+{
+ballSpeedX=15;
+ballSpeedY=10;
+}
+});
+//level3
+canvas.addEventListener("click",function(event){
+if(mouseCount(event).x>500 && mouseCount(event).x<570 && mouseCount(event).y>10 && mouseCount(event).y<40)
+{
+ballSpeedX=20;
+ballSpeedY=16;
+}
+});
+
+
+
+
+
+
+
+
+
+}
+//both();
+function both()
+{
+moveEvery();
+drowEvery();
+};
+
+//mouseCount
+function mouseCount(event)
+{
+var mouseX=event.clientX;
+var mouseY=event.clientY;
+return{
+x:mouseX,
+y:mouseY
+}
+};
+
+//reset
+function reset()
+{
+ ballX=100;
+ ballY=100;
+}
+
+
+//moveEvery
+function moveEvery()
+{
+ballX=ballX+ballSpeedX;
+ballY=ballY+ballSpeedY;
+
+
+if(ballX>=canvas.width)
+{
+
+ballSpeedX=-ballSpeedX;//ballX=ballX+(-ballSpeedX)ballX=ballX-ballSpeedX
+};
+if(ballX<=0)
+{
+if(ballY>paddleY&&ballY<paddleY+paddleHeight){
+ballSpeedX=-ballSpeedX;//ballX=ballX-(-ballSpeedX)
+}else{
+ballSpeedX=-ballSpeedX;
+reset();
+code++;
+if(code==4)
+{
+alert("Game Over")
+code=0;
+}
+}
+
+};
+
+if(ballY>=canvas.height)
+{
+ballSpeedY=-ballSpeedY;
+};
+if(ballY<=0)
+{
+ballSpeedY=-ballSpeedY;
+};
+console.log(ballX);
+}
+
+
+//drowEvery()
+function drowEvery()
+{
+//background
+colorRect("blue",0,0,canvas.width,canvas.height);
+//canvasContext.fillStyle="blue";
+//canvasContext.fillRect(0,0,canvas.width,canvas.height);
+//ball
+colorRect("yellow",ballX,ballY,10,10);
+//canvasContext.fillStyle="yellow";
+//canvasContext.fillRect(ballX,ballY,10,10);
+//left paddle
+colorRect("yellow",2,paddleY,10,paddleHeight);
+//canvasContext.fillRect(2,paddleY,10,paddleHeight);
+//right paddle
+colorRect("yellow",788,ballY-paddleHeight/2,10,150);
+//canvasContext.fillRect(788,ballY-paddleHeight/2,10,150);
+//colorContext.fillText("hello",100,100);
+//canvasContext.fillText("Hello",100,100);
+colorText("yellow",code,100,200);
+//play button
+colorRect("seagreen",100,10,60,30);
+colorText("yellow","Play",110,30);
+//pause
+colorRect("seagreen",200,10,60,30);
+colorText("yellow","Pause",210,30);
+//level 1
+colorRect("seagreen",300,10,70,30);
+colorText("yellow","Level1",310,30);
+//level 2
+colorRect("seagreen",400,10,70,30);
+colorText("yellow","Level2",410,30);
+//level 3
+colorRect("seagreen",500,10,70,30);
+colorText("yellow","Level3",510,30);
+
+
+
+}
+
+function colorRect(color,x,y,width,height){
+canvasContext.fillStyle=color;
+canvasContext.fillRect(x,y,width,height);
+}
+
+function colorText(color,text,x,y){
+canvasContext.fillStyle=color;
+canvasContext.font="20px airle";
+canvasContext.fillText(text,x,y);
+}
+
+</script>
+</html>
